@@ -1,4 +1,4 @@
-jquery-rangepicker
+jQuery-rangepicker
 ==================
 
-A convenient date range picker for jQuery
+A convenient date range picker for jQuery.

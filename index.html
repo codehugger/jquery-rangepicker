@@ -1,0 +1,70 @@
+<html>
+<head>
+    <title>jQuery Range-Picker</title>
+    <script src="./jquery.min.js"></script>
+    <script src="./jquery-rangepicker.js"></script>
+    <style>
+    .rangepicker {
+        width: 14em;
+        background: #000;
+        color: #fff;
+    }
+    .day {
+        display: inline-block;
+        vertical-align: middle;
+        text-align: center;
+        width: 14.28571428571429%;
+    }
+    .enabled {
+        font-weight: bold;
+    }
+    .disabled {
+        color: #999;
+    }
+    .today {
+        background-color: #99f;
+        color: #fff;
+    }
+    .inrange {
+        background-color: #ccc;
+    }
+    .selected {
+        background-color: #f66;
+        color: #fff;
+    }
+    .navigation {
+        width: 100%;
+    }
+    .navigation .prev,
+    .navigation .next,
+    .navigation .display {
+        display: inline-block;
+        text-align: center;
+    }
+    .navigation .prev,
+    .navigation .next {
+        width: 25%;
+    }
+    .navigation .display {
+        width: 50%;
+    }
+    .calendar {
+        width: 100%;
+    }
+    .week {
+        width: 100%;
+    }
+    </style>
+</head>
+<body>
+    <div id="rangepicker"></div>
+
+    <script type="text/javascript">
+        $(function () {
+            $('#rangepicker').rangepicker({
+                selectedDate: new Date()
+            });
+        });
+    </script>
+</body>
+</html>
