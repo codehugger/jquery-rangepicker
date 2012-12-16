@@ -907,6 +907,30 @@
         }
 
         /*
+         * event handler for clicking the 'from' button on the calendar
+         */
+        function fromClicked(e) {
+            displayedDate = new Date(dateFrom.startOfMonth());
+            render();
+        }
+
+        /*
+         * event handler for clicking the 'today' button on the calendar
+         */
+        function todayClicked(e) {
+            displayedDate = new Date(TODAY).startOfMonth();
+            render();
+        }
+
+        /*
+         * event handler for clicking the 'to' button on the calendar
+         */
+        function toClicked(e) {
+            displayedDate = new Date(dateTo.startOfMonth());
+            render();
+        }
+
+        /*
          * handles the construction of a jquery node for a day setting all the
          * correct display classes for selected, today and included
          */
@@ -993,14 +1017,44 @@
         /*
          * handles the construction of the jquery node for the calendar area
          */
-        function buildCalendar(date) {
-            return $(calendarTemplate).append(buildMonth(new Date(date)));
+        function buildCalendar() {
+            return $(calendarTemplate).append(buildMonth(new Date(displayedDate.startOfCalendar())));
+        }
+
+        /*
+         * handles the construction of the jquery node for the range area
+         */
+        function buildRange() {
+            // initialize elements
+            var range_node = $(rangeTemplate);
+            var from_node = $(fromTemplate);
+            var today_node = $(todayTemplate);
+            var to_node = $(toTemplate);
+
+            // set content
+            from_node.attr('id', dateFrom.strftime(valueFormat));
+            from_node.html(dateFrom.strftime(valueFormat));
+            today_node.attr('id', new Date(TODAY).strftime(valueFormat));
+            to_node.attr('id', dateTo.strftime(valueFormat));
+            to_node.html(dateTo.strftime(valueFormat));
+
+            // register events
+            from_node.on('click', fromClicked);
+            today_node.on('click', todayClicked);
+            to_node.on('click', toClicked);
+
+            // construct range area
+            range_node.append(from_node);
+            range_node.append(today_node);
+            range_node.append(to_node);
+
+            return range_node;
         }
 
         /*
          * handles the construction of the jquery node for the navigation controls
          */
-        function buildNav(date) {
+        function buildNav() {
             // initialize elements
             var nav_node = $(navTemplate);
             var prev_node = $(prevTemplate);
@@ -1102,13 +1156,16 @@
             // make sure we have a clean slate
             var root = $(rootTemplate);
 
-            // add navigation
-            root.append(buildNav(displayedDate.startOfCalendar()));
+            // add navigation display
+            root.append(buildNav());
 
-            // add calendar
-            root.append(buildCalendar(displayedDate.startOfCalendar()));
+            // add range display
+            root.append(buildRange());
 
-            // add mode selection
+            // add calendar display
+            root.append(buildCalendar());
+
+            // add mode selection display
             root.append(buildModeSelection());
 
             // add rangepicker to root element
@@ -1134,21 +1191,27 @@
 
             // set templates for calendar display
             rootTemplate        = opts.rootTemplate     || '<div class="rangepicker"></div>';
-            dayTemplate         = opts.dayTemplate      || '<span class="day"></span>';
+            dayTemplate         = opts.dayTemplate      || '<a class="day"></a>';
             weekTemplate        = opts.weekTemplate     || '<div class="week"></div>';
             monthTemplate       = opts.monthTemplate    || '<div class="month"></div>';
             calendarTemplate    = opts.calendarTemplate || '<div class="calendar"></div>';
 
             // set templates for navigation display
             navTemplate         = opts.navTemplate      || '<div class="nav"></div>';
-            prevTemplate        = opts.prevTemplate     || '<span class="prev">&lt;</span>';
-            labelTemplate       = opts.labelTemplate    || '<span class="label"></span>';
-            nextTemplate        = opts.nextTemplate     || '<span class="next">&gt;</span>';
+            prevTemplate        = opts.prevTemplate     || '<a class="prev">&lt;</a>';
+            labelTemplate       = opts.labelTemplate    || '<a class="label"></a>';
+            nextTemplate        = opts.nextTemplate     || '<a class="next">&gt;</a>';
+
+            // set templates for range display
+            rangeTemplate       = opts.rangeTemplate    || '<div class="range"></div>';
+            fromTemplate        = opts.fromTemplate     || '<a class="from"></a>';
+            todayTemplate       = opts.todayTemplate    || '<a class="today">Today</a>';
+            toTemplate          = opts.toTemplate       || '<a class="to"></a>';
 
             // set templates for mode display
             modeTemplate        = opts.modeTemplate     || '<div class="mode"></div>';
-            fixedTemplate       = opts.fixedTemplate    || '<span class="fixed">Fixed</div>';
-            customTemplate      = opts.customTemplate   || '<span class="custom">Custom</div>';
+            fixedTemplate       = opts.fixedTemplate    || '<a class="fixed">Fixed</a>';
+            customTemplate      = opts.customTemplate   || '<a class="custom">Custom</a>';
 
             // set classes for logical elements
             disabledClass       = opts.disabledClass    || 'disabled';
