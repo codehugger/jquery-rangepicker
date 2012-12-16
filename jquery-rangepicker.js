@@ -856,20 +856,34 @@
          * event handler for selecting fixed mode
          */
         function fixedSelected(e) {
-            console.log('fixed selected');
+            // save state from custom navigation
             currentDate = new Date(dateFrom);
+
+            // start the period type cycle
             periodType = PERIOD_DAY;
+
+            // update the dateFrom and dateTo
             updateRange();
+
+            // display the component
             render();
+
+            // stop event from propagating
+            e.preventDefault();
         }
 
         /*
          * event handler for selecting custom mode
          */
         function customSelected(e) {
-            console.log('custom selected');
+            // initialize custom mode
             periodType = PERIOD_CUSTOM;
+
+            // display the component
             render();
+
+            // stop event from propagating
+            e.preventDefault();
         }
 
         /*
@@ -882,14 +896,12 @@
                 currentMonth = 11;
             }
             displayedDate.setMonth(currentMonth);
-            render();
-            e.preventDefault();
-        }
 
-        /*
-         * event handler for clicking the date label on the calendar
-         */
-        function labelClicked(e) {
+            // display the component
+            render();
+
+            // stop event from propagating
+            e.preventDefault();
         }
 
         /*
@@ -902,7 +914,11 @@
                 currentMonth = 0;
             }
             displayedDate.setMonth(currentMonth);
+
+            // display the component
             render();
+
+            // stop event from propagating
             e.preventDefault();
         }
 
@@ -912,6 +928,9 @@
         function fromClicked(e) {
             displayedDate = new Date(dateFrom.startOfMonth());
             render();
+
+            // stop event from propagating
+            e.preventDefault();
         }
 
         /*
@@ -920,6 +939,9 @@
         function todayClicked(e) {
             displayedDate = new Date(TODAY).startOfMonth();
             render();
+
+            // stop event from propagating
+            e.preventDefault();
         }
 
         /*
@@ -928,6 +950,9 @@
         function toClicked(e) {
             displayedDate = new Date(dateTo.startOfMonth());
             render();
+
+            // stop event from propagating
+            e.preventDefault();
         }
 
         /*
@@ -1063,7 +1088,6 @@
 
             // register events
             prev_node.on('click', prevMonth);
-            label_node.on('click', labelClicked);
             next_node.on('click', nextMonth);
 
             // construct navigation area
@@ -1191,27 +1215,27 @@
 
             // set templates for calendar display
             rootTemplate        = opts.rootTemplate     || '<div class="rangepicker"></div>';
-            dayTemplate         = opts.dayTemplate      || '<a class="day"></a>';
+            dayTemplate         = opts.dayTemplate      || '<a href="#" class="day"></a>';
             weekTemplate        = opts.weekTemplate     || '<div class="week"></div>';
             monthTemplate       = opts.monthTemplate    || '<div class="month"></div>';
             calendarTemplate    = opts.calendarTemplate || '<div class="calendar"></div>';
 
             // set templates for navigation display
             navTemplate         = opts.navTemplate      || '<div class="nav"></div>';
-            prevTemplate        = opts.prevTemplate     || '<a class="prev">&lt;</a>';
-            labelTemplate       = opts.labelTemplate    || '<a class="label"></a>';
-            nextTemplate        = opts.nextTemplate     || '<a class="next">&gt;</a>';
+            prevTemplate        = opts.prevTemplate     || '<a href="#" class="prev">&lt;</a>';
+            labelTemplate       = opts.labelTemplate    || '<a href="#" class="label"></a>';
+            nextTemplate        = opts.nextTemplate     || '<a href="#" class="next">&gt;</a>';
 
             // set templates for range display
             rangeTemplate       = opts.rangeTemplate    || '<div class="range"></div>';
-            fromTemplate        = opts.fromTemplate     || '<a class="from"></a>';
-            todayTemplate       = opts.todayTemplate    || '<a class="today">Today</a>';
-            toTemplate          = opts.toTemplate       || '<a class="to"></a>';
+            fromTemplate        = opts.fromTemplate     || '<a href="#" class="from"></a>';
+            todayTemplate       = opts.todayTemplate    || '<a href="#" class="today">Today</a>';
+            toTemplate          = opts.toTemplate       || '<a href="#" class="to"></a>';
 
             // set templates for mode display
             modeTemplate        = opts.modeTemplate     || '<div class="mode"></div>';
-            fixedTemplate       = opts.fixedTemplate    || '<a class="fixed">Fixed</a>';
-            customTemplate      = opts.customTemplate   || '<a class="custom">Custom</a>';
+            fixedTemplate       = opts.fixedTemplate    || '<a href="#" class="fixed">Fixed</a>';
+            customTemplate      = opts.customTemplate   || '<a href="#" class="custom">Custom</a>';
 
             // set classes for logical elements
             disabledClass       = opts.disabledClass    || 'disabled';
