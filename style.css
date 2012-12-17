@@ -79,7 +79,7 @@ a.disabled {
 }
 .nav .prev,
 .nav .next,
-.nav .label {
+.nav .display {
     display: inline-block;
     text-align: center;
 }
@@ -87,13 +87,14 @@ a.disabled {
 .nav .next {
     width: 20%;
     -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
     border-radius: 15px;
 }
 .nav .prev:hover,
 .nav .next:hover {
     background-color: #66c;
 }
-.nav .label {
+.nav .display {
     color: #eee;
     font-weight: bold;
     width: 60%;
@@ -114,6 +115,7 @@ a.disabled {
 .range .to {
     background-color: #333;
     -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
     border-radius: 15px;
     display: inline-block;
     width: 33.33333333%;

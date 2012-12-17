@@ -532,7 +532,7 @@
             // set templates for navigation display
             navTemplate         = opts.navTemplate      || '<div class="nav"></div>';
             prevTemplate        = opts.prevTemplate     || '<a href="#" class="prev">&lt;</a>';
-            labelTemplate       = opts.labelTemplate    || '<span class="label"></span>';
+            labelTemplate       = opts.labelTemplate    || '<span class="display"></span>';
             nextTemplate        = opts.nextTemplate     || '<a href="#" class="next">&gt;</a>';
 
             // set templates for range display
