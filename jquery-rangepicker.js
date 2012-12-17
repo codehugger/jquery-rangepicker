@@ -815,7 +815,7 @@
         var displayFormat, valueFormat;
 
         // declare internals
-        var currentDate, dateFrom, dateTo, periodType, displayedDate, selectingLast;
+        var currentDate, dateFrom, dateTo, periodType, displayedDate, selectingLast, onRangeUpdated;
 
         // declare ui templates
         var rootTemplate, calendarTemplate, monthTemplate, weekTemplate, dayTemplate,
@@ -954,6 +954,10 @@
             // stop event from propagating
             e.preventDefault();
         }
+
+        /*
+         * delegate for when the date range changes
+         */
 
         /*
          * handles the construction of a jquery node for a day setting all the
@@ -1133,6 +1137,9 @@
                 // range which is beginning of currentDate to end of currentDate
                 if (selectingLast) {
                     dateTo = currentDate.endOfDay();
+
+                    // we only notify listener when the complete range has been determined
+                    if (onRangeUpdated) { onRangeUpdated([dateFrom, dateTo]); }
                 }
                 else {
                     dateFrom = currentDate.startOfDay();
@@ -1159,17 +1166,10 @@
                     to = to.endOfMonth();
                 }
 
-                dateFrom = new Date(from);
-                dateTo = new Date(to);
-            }
+                dateFrom = new Date(Math.min(from, to));
+                dateTo = new Date(Math.max(from, to));
 
-            if (dateFrom.valueOf() > dateTo.valueOf()) {
-                // after we have determined from and two there is
-                // the possibility of dateFrom being after dateTo
-                // if this happens we simply swap them
-                var tmp = new Date(dateTo.valueOf());
-                dateTo = new Date(dateFrom.valueOf());
-                dateFrom = tmp;
+                if (onRangeUpdated) { onRangeUpdated([dateFrom, dateTo]); }
             }
         }
 
@@ -1201,13 +1201,15 @@
          */
         function init(opts) {
 
+            if (opts === undefined) { opts = {}; }
+
             // set internals according to options and defaults
             currentDate         = opts.currentDate      || new Date().startOfDay();
             dateFrom            = opts.dateFrom         || currentDate.startOfDay();
             dateTo              = opts.dateTo           || currentDate.endOfDay();
             periodType          = opts.periodType       || PERIOD_DAY;
             displayedDate       = opts.displayedDate    || currentDate.startOfMonth();
-            changeCallback      = opts.changeCallback   || function (range) {};
+            onRangeUpdated      = opts.onRangeUpdated   || function (range) {};
             cyclePeriodTypes    = opts.cycleModes       || true;
             selectingLast       = false;
             valueFormat         = opts.dateFormat       || '%Y-%m-%d';
@@ -1246,6 +1248,9 @@
 
             // initial build
             render();
+
+            // initial range
+            updateRange();
 
             // return reference to self for jquery chaining
             return self;
