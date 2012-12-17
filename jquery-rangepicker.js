@@ -1007,7 +1007,14 @@
             }
 
             // register click event on date
-            day_node = day_node.on('click', dateSelected);
+
+            if ((minDate === null || date > minDate) &&
+                (maxDate === null || date < maxDate)) {
+                day_node.on('click', dateSelected);
+            } else {
+                day_node.on('click', function (e) { e.preventDefault(); });
+                day_node.addClass('disabled');
+            }
 
             return day_node;
         }
@@ -1091,8 +1098,18 @@
             var next_node = $(nextTemplate);
 
             // register events
-            prev_node.on('click', prevMonth);
-            next_node.on('click', nextMonth);
+            if (minDate === null || minDate < displayedDate) {
+                prev_node.on('click', prevMonth);
+            } else {
+                prev_node.on('click', function (e) { e.preventDefault(); });
+                prev_node.addClass('disabled');
+            }
+            if (maxDate === null || maxDate > displayedDate.endOfMonth()) {
+                next_node.on('click', nextMonth);
+            } else {
+                next_node.on('click', function (e) { e.preventDefault(); });
+                next_node.addClass('disabled');
+            }
 
             // construct navigation area
             nav_node.append(prev_node);
@@ -1138,6 +1155,12 @@
                 if (selectingLast) {
                     dateTo = currentDate.endOfDay();
 
+                    if (dateFrom > dateTo) {
+                        var tmp = dateFrom.startOfDay();
+                        dateFrom = dateTo.startOfDay();
+                        dateTo = tmp;
+                    }
+
                     // we only notify listener when the complete range has been determined
                     if (onRangeUpdated) { onRangeUpdated([dateFrom, dateTo]); }
                 }
@@ -1166,8 +1189,8 @@
                     to = to.endOfMonth();
                 }
 
-                dateFrom = new Date(Math.min(from, to));
-                dateTo = new Date(Math.max(from, to));
+                if (dateFrom < minDate) { dateFrom = new Date(Math.max(dateFrom, minDate)); }
+                if (dateTo > maxDate) { dateTo = new Date(Math.min(dateTo, maxDate)); }
 
                 if (onRangeUpdated) { onRangeUpdated([dateFrom, dateTo]); }
             }
@@ -1214,6 +1237,8 @@
             selectingLast       = false;
             valueFormat         = opts.dateFormat       || '%Y-%m-%d';
             displayFormat       = opts.labelFormat      || '%B %Y';
+            minDate             = opts.minDate          || null;
+            maxDate             = opts.maxDate          || new Date();
 
             // set templates for calendar display
             rootTemplate        = opts.rootTemplate     || '<div class="rangepicker"></div>';
