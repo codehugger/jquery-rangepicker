@@ -1,5 +1,5 @@
 ko.bindingHandlers.rangepicker = {
-    init: function(element, valueAccessor, allBindingsAccessor) {
+    update: function (element, valueAccessor, allBindingsAccessor) {
         // First get the latest data that we're bound to
         var value = valueAccessor(), allBindings = allBindingsAccessor();
 
@@ -10,13 +10,15 @@ ko.bindingHandlers.rangepicker = {
         $(element).rangepicker({
             onUpdate: function (newRange) {
                 value(newRange);
-            }
+            },
+            dateFrom: valueUnwrapped[0],
+            dateTo: valueUnwrapped[1]
         });
     }
 };
 
 ko.bindingHandlers.strftime = {
-    update: function(element, valueAccessor, allBindingsAccessor) {
+    update: function (element, valueAccessor, allBindingsAccessor) {
         // First get the latest data that we're bound to
         var value = valueAccessor(), allBindings = allBindingsAccessor();
 

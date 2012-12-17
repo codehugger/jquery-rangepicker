@@ -32,6 +32,12 @@
         return new Date(this.getFullYear(), this.getMonth() + 1, 0).getDate();
     };
 
+    /* get the number of the week */
+    Date.prototype.getWeek = function() {
+        var onejan = new Date(this.getFullYear(),0,1);
+        return Math.ceil((((this - onejan) / 86400000) + onejan.getDay()+1)/7);
+    };
+
     /* beginning of day at 00:00:00.000 */
     Date.prototype.startOfDay = function () {
         return new Date(this.getFullYear(), this.getMonth(), this.getDate(), 0, 0, 0, 0);
@@ -85,6 +91,8 @@
         var PERIOD_MONTH = 2;
         var PERIOD_CUSTOM = 3;
 
+        var PERIOD_CHOICES = ['day', 'week', 'month', 'custom'];
+
         // display formatting
         var displayFormat, valueFormat;
 
@@ -97,7 +105,7 @@
             modeTemplate, fixedTemplate, customTemplate;
 
         // declare ui element classes
-        var selectedClass, includedClass, todayClass, disabledClass, enabledClass;
+        var selectedClass, includedClass, todayClass, disabledClass, enabledClass, activeClass;
 
         /*
          * event handler for clicking a day in the calendar
@@ -135,12 +143,15 @@
         /*
          * event handler for selecting fixed mode
          */
-        function fixedSelected(e) {
+        function fixedClicked(e) {
             // save state from custom navigation
             currentDate = new Date(dateFrom);
 
             // start the period type cycle
             periodType = PERIOD_DAY;
+
+            // move the display of the calendar to the fromDate
+            displayedDate = dateFrom.startOfMonth();
 
             // update the dateFrom and dateTo
             updateRange();
@@ -155,7 +166,7 @@
         /*
          * event handler for selecting custom mode
          */
-        function customSelected(e) {
+        function customClicked(e) {
             // initialize custom mode
             periodType = PERIOD_CUSTOM;
 
@@ -405,16 +416,16 @@
             var custom_node = $(customTemplate);
 
             // register events
-            fixed_node.on('click', fixedSelected);
-            custom_node.on('click', customSelected);
+            fixed_node.on('click', fixedClicked);
+            custom_node.on('click', customClicked);
 
             // construct mode selection area
             mode_node.append(fixed_node);
             mode_node.append(custom_node);
 
             // set selection class
-            if (periodType === PERIOD_CUSTOM) { custom_node.addClass(selectedClass); }
-            else { fixed_node.addClass(selectedClass); }
+            if (periodType === PERIOD_CUSTOM) { custom_node.addClass(activeClass); }
+            else { fixed_node.addClass(activeClass); }
 
             return mode_node;
         }
@@ -512,7 +523,7 @@
             currentDate         = opts.currentDate      || new Date().startOfDay();
             dateFrom            = opts.dateFrom         || currentDate.startOfDay();
             dateTo              = opts.dateTo           || currentDate.endOfDay();
-            periodType          = opts.periodType       || PERIOD_DAY;
+            periodType          = opts.periodType       || 'day';
             displayedDate       = opts.displayedDate    || currentDate.startOfMonth();
             onUpdate            = opts.onUpdate         || function (range) {};
             cyclePeriodTypes    = opts.cycleModes       || true;
@@ -530,7 +541,7 @@
             calendarTemplate    = opts.calendarTemplate || '<div class="calendar"></div>';
 
             // set templates for navigation display
-            navTemplate         = opts.navTemplate      || '<div class="nav"></div>';
+            navTemplate         = opts.navTemplate      || '<div class="navigation"></div>';
             prevTemplate        = opts.prevTemplate     || '<a href="#" class="prev">&lt;</a>';
             labelTemplate       = opts.labelTemplate    || '<span class="display"></span>';
             nextTemplate        = opts.nextTemplate     || '<a href="#" class="next">&gt;</a>';
@@ -551,13 +562,52 @@
             enabledClass        = opts.enabledClass     || 'enabled';
             selectedClass       = opts.selectedClass    || 'selected';
             includedClass       = opts.includedClass    || 'included';
+            activeClass         = opts.activeClass      || 'active';
             todayClass          = opts.todayClass       || 'today';
+
+            // allow configuration to use strings instead of cryptic numbers used internally
+            $.each(function (i, value) {
+                if (value === periodType) {
+                    periodType = i;
+                }
+            });
+
+            if (dateFrom && dateTo) {
+                from = dateFrom.startOfDay();
+                to = dateTo.startOfDay();
+
+                periodType = PERIOD_CUSTOM;
+
+                if (from === to &&
+                    periodType !== PERIOD_CUSTOM) {
+                    periodType = PERIOD_DAY;
+                }
+                else if (from.getDay() === 0 &&
+                    to.getDay() === 6 &&
+                    from.getWeek() === to.getWeek() &&
+                    periodType !== PERIOD_CUSTOM) {
+                    periodType = PERIOD_WEEK;
+                }
+                else if (from.getMonth() === to.getMonth() &&
+                    from.getDate() === 1 &&
+                    to.getDate() === from.daysInMonth() &&
+                    periodType !== PERIOD_CUSTOM) {
+                    periodType = PERIOD_MONTH;
+                }
+                else {
+                    selectingLast = false;
+                }
+
+                currentDate = dateFrom.startOfDay();
+            }
+
+            displayedDate = dateFrom.startOfMonth();
+
+            // trigger initial update of range
+            onUpdate([dateFrom, dateTo]);
 
             // initial build
             render();
-
-            // initial range
-            updateRange();
 
             // return reference to self for jquery chaining
             return self;

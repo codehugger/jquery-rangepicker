@@ -7,24 +7,29 @@
     <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 <body>
-    <div class="menu">
-        <a href="./index.html" class="active">Vanilla.js</a>
-        <a href="./index-ko.html">Knockout.js</a>
+
+    <div class="nav">
+        <span><a href="./index.html" class="active">Vanilla.js</a></span>
+        <span><a href="./index-ko.html">Knockout.js</a></span>
     </div>
 
     <div id="rangepicker"></div>
 
     <div class="rangedisplay">
-        <span class="datefrom">foo</span>
-        to
-        <span class="dateto">bar</span>
+        <span class="datefrom">FROM</span>
+        -
+        <span class="dateto">TO</span>
     </div>
 
     <script type="text/javascript">
         $(function () {
+            var now = new Date();
+            now.setFullYear(now.getFullYear() - 1);
             $("#rangepicker").rangepicker({
+                dateFrom: now.startOfWeek(),
+                dateTo: now.endOfWeek(),
+                periodType: 'custom',
                 onUpdate: function (newRange) {
-                    console.log('change', newRange);
                     $(".datefrom").html(newRange[0].strftime('%Y %b %d'));
                     $(".dateto").html(newRange[1].strftime('%Y %b %d'));
                 }

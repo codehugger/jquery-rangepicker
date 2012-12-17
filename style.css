@@ -4,8 +4,9 @@ body {
 .rangepicker {
     cursor: arrow;
     width: 20em;
-    margin: 4em auto;
+    margin: 2em auto;
     background: #000;
+    color: #fff;
     -moz-border-radius: 15px;
     border-radius: 15px;
     padding: 0.5em;
@@ -14,31 +15,38 @@ body {
     box-shadow:         6px 6px 6px 2px #666;
     font-size: 90%;
 }
-.rangedisplay,
-.menu {
-    width: 40em;
+.nav {
+    width: 20em;
     margin: 2em auto;
     text-align: center;
-    font-size: 1.4em;
-    color: #666;
 }
-.menu a {
-    color: #666;
+.nav .active {
+    background-color: #ccc;
+}
+.nav a {
+    display: inline-block;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    width: 49%;
+    height: 2em;
+    line-height: 2em;
     text-decoration: none;
     font-weight: bold;
-    display: inline-block;
-    padding: 0.5em;
+    color: #000;
 }
-.menu a.active {
-    background: #ccc;
+.nav a:hover {
+    background-color: #eee;
 }
-.menu a:hover {
-    background: #ccc;
+.rangedisplay {
+    width: 20em;
+    margin: 2em auto;
+    text-align: center;
+    color: #000;
 }
 .datefrom,
 .dateto {
     font-weight: bold;
-    color: #666;
 }
 .rangepicker a {
     color: #eee;
@@ -49,12 +57,12 @@ body {
     vertical-align: middle;
     text-align: center;
     width: 14.28571428571429%;
+    -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
     border-radius: 15px;
 }
-.enabled {
-}
-a.disabled {
+
+.calendar .disabled {
     color: #999;
 }
 .calendar {
@@ -62,42 +70,47 @@ a.disabled {
 }
 .calendar .included {
     background-color: #666;
+    color: #fff;
 }
 .calendar .today {
     background-color: #6c6;
 }
 .calendar .selected {
     background-color: #c66;
+    color: #fff;
 }
 .day:hover {
     background-color: #66c;
 }
-.nav {
+.navigation {
     width: 100%;
     height: 2em;
     line-height: 2em;
 }
-.nav .prev,
-.nav .next,
-.nav .display {
+.navigation .prev,
+.navigation .next,
+.navigation .display {
     display: inline-block;
     text-align: center;
 }
-.nav .prev,
-.nav .next {
+.navigation .prev,
+.navigation .next {
     width: 20%;
     -moz-border-radius: 15px;
     -webkit-border-radius: 15px;
     border-radius: 15px;
 }
-.nav .prev:hover,
-.nav .next:hover {
+.navigation .prev:hover,
+.navigation .next:hover {
     background-color: #66c;
 }
-.nav .display {
+.navigation .display {
     color: #eee;
     font-weight: bold;
     width: 60%;
+}
+.navigation .disabled {
+    display: none;
 }
 .range {
     width: 100%;
