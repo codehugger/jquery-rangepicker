@@ -6,22 +6,29 @@
     <script src="./jquery-rangepicker.js"></script>
     <script src="./jquery-rangepicker-knockout.js"></script>
     <style>
-    .rangepicker {
+    .rangepicker,
+    .rangedisplay {
         cursor: arrow;
         width: 20em;
         margin: 2em auto;
         background: #000;
-        color: #fff;
         -moz-border-radius: 15px;
         border-radius: 15px;
         padding: 0.5em;
         -moz-box-shadow:    6px 6px 6px 2px #666;
         -webkit-box-shadow: 6px 6px 6px 2px #666;
         box-shadow:         6px 6px 6px 2px #666;
+        font-family: Helvetica, Arial, Sans-serif;
+        font-size: 90%;
     }
     .rangepicker a {
         color: #eee;
         text-decoration: none;
+    }
+    .rangedisplay {
+        color: #eee;
+        text-align: center;
+        font-weight: bold;
     }
     .day {
         display: inline-block;
@@ -43,13 +50,13 @@
         background-color: #666;
     }
     .calendar .today {
-        background-color: #6c6;
+        background-color: #696;
     }
     .calendar .selected {
         background-color: #c66;
     }
     .day:hover {
-        background-color: #66c;
+        background-color: #555;
     }
     .nav {
         width: 100%;
@@ -86,7 +93,7 @@
     .range .from:hover,
     .range .today:hover,
     .range .to:hover {
-        background-color: #66c;
+        background-color: #555;
     }
     .range .from,
     .range .today,
@@ -121,22 +128,24 @@
         background-color: #333;
     }
 
-    .mode .selected,
-    .mode .selected {
-        background-color: #6c6;
-    }
-
     .mode .fixed:hover,
     .mode .custom:hover {
-        background-color: #66c;
+        background-color: #555;
+    }
+
+    .mode .selected,
+    .mode .selected {
+        background-color: #696;
     }
     </style>
 </head>
 <body>
     <div data-bind="rangepicker: dateRange"></div>
 
-    <div data-bind="text: dateFrom" style="color: #000">foo</div>
-    <div data-bind="text: dateTo" style="color: #000">bar</div>
+    <div class="rangedisplay">
+        <div data-bind="strftime: dateFrom">foo</div>
+        <div data-bind="strftime: dateTo">bar</div>
+    </div>
 
     <script type="text/javascript">
         $(function () {
@@ -145,10 +154,10 @@
 
                 this.dateRange = ko.observable([]);
                 this.dateFrom = ko.computed(function () {
-                    if (this.dateRange()) { return this.dateRange()[0]; }
+                    if (this.dateRange()) { return this.dateRange()[0] }
                 }, this);
                 this.dateTo = ko.computed(function () {
-                    if (this.dateRange()) { return this.dateRange()[1]; }
+                    if (this.dateRange()) { return this.dateRange()[1] }
                 }, this)
             };
 
