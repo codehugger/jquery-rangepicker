@@ -143,13 +143,11 @@
             var ViewModel = function() {
                 self = this;
 
-                this.dateRange = ko.observableArray([]);
+                this.dateRange = ko.observable([]);
                 this.dateFrom = ko.computed(function () {
-                    console.log('dateFrom', self.dateRange());
                     if (this.dateRange()) { return this.dateRange()[0]; }
                 }, this);
                 this.dateTo = ko.computed(function () {
-                    console.log('dateTo', self.dateRange());
                     if (this.dateRange()) { return this.dateRange()[1]; }
                 }, this)
             };

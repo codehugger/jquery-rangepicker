@@ -956,10 +956,6 @@
         }
 
         /*
-         * delegate for when the date range changes
-         */
-
-        /*
          * handles the construction of a jquery node for a day setting all the
          * correct display classes for selected, today and included
          */
@@ -1012,7 +1008,7 @@
                 (maxDate === null || date < maxDate)) {
                 day_node.on('click', dateSelected);
             } else {
-                day_node.on('click', function (e) { e.preventDefault(); });
+                day_node.on('click', function (e) { e.preventDefault(); });
                 day_node.addClass('disabled');
             }
 
@@ -1101,13 +1097,13 @@
             if (minDate === null || minDate < displayedDate) {
                 prev_node.on('click', prevMonth);
             } else {
-                prev_node.on('click', function (e) { e.preventDefault(); });
+                prev_node.on('click', function (e) { e.preventDefault(); });
                 prev_node.addClass('disabled');
             }
             if (maxDate === null || maxDate > displayedDate.endOfMonth()) {
                 next_node.on('click', nextMonth);
             } else {
-                next_node.on('click', function (e) { e.preventDefault(); });
+                next_node.on('click', function (e) { e.preventDefault(); });
                 next_node.addClass('disabled');
             }
 
@@ -1147,7 +1143,6 @@
          * properly handles setting dateFrom and dateTo depending on mode and selection
          */
         function updateRange() {
-
             if (periodType === PERIOD_CUSTOM) {
                 // we require two clicks in order to determine from and to
                 // and until then we get the second click we need a stable
@@ -1189,8 +1184,15 @@
                     to = to.endOfMonth();
                 }
 
-                if (dateFrom < minDate) { dateFrom = new Date(Math.max(dateFrom, minDate)); }
-                if (dateTo > maxDate) { dateTo = new Date(Math.min(dateTo, maxDate)); }
+                if (minDate && from < minDate) {
+                    from = new Date(minDate.valueOf());
+                }
+                if (maxDate && to > maxDate) {
+                    to = new Date(maxDate.valueOf());
+                }
+
+                dateFrom = from;
+                dateTo = to;
 
                 if (onRangeUpdated) { onRangeUpdated([dateFrom, dateTo]); }
             }
