@@ -8,7 +8,7 @@ ko.bindingHandlers.rangepicker = {
 
         // Now manipulate the DOM element
         $(element).rangepicker({
-            onRangeUpdated: function (newRange) {
+            onUpdate: function (newRange) {
                 value(newRange);
             }
         });

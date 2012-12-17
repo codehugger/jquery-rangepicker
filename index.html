@@ -1,142 +1,34 @@
 <html>
 <head>
-    <title>jQuery Range-Picker</title>
-    <script src="./jquery.min.js"></script>
-    <script src="./knockout.js"></script>
+    <title>rangepicker</title>
+    <script src="./vendor/jquery.min.js"></script>
+    <script src="./vendor/strftime.js"></script>
     <script src="./jquery-rangepicker.js"></script>
-    <style>
-    .rangepicker {
-        cursor: arrow;
-        width: 20em;
-        margin: 5em auto;
-        background: #000;
-        color: #fff;
-        -moz-border-radius: 15px;
-        border-radius: 15px;
-        padding: 0.5em;
-        -moz-box-shadow:    6px 6px 6px 2px #666;
-        -webkit-box-shadow: 6px 6px 6px 2px #666;
-        box-shadow:         6px 6px 6px 2px #666;
-    }
-    .rangepicker a {
-        color: #eee;
-        text-decoration: none;
-    }
-    .day {
-        display: inline-block;
-        vertical-align: middle;
-        text-align: center;
-        width: 14.28571428571429%;
-        -moz-border-radius: 15px;
-        border-radius: 15px;
-    }
-    .enabled {
-    }
-    a.disabled {
-        color: #999;
-    }
-    .calendar {
-        margin: 1em 0;
-    }
-    .calendar .included {
-        background-color: #666;
-    }
-    .calendar .today {
-        background-color: #6c6;
-    }
-    .calendar .selected {
-        background-color: #c66;
-    }
-    .day:hover {
-        background-color: #66c;
-    }
-    .nav {
-        width: 100%;
-        height: 2em;
-        line-height: 2em;
-    }
-    .nav .prev,
-    .nav .next,
-    .nav .label {
-        display: inline-block;
-        text-align: center;
-    }
-    .nav .prev,
-    .nav .next {
-        width: 20%;
-        -moz-border-radius: 15px;
-        border-radius: 15px;
-    }
-    .nav .prev:hover,
-    .nav .next:hover {
-        background-color: #66c;
-    }
-    .nav .label {
-        color: #eee;
-        font-weight: bold;
-        width: 60%;
-    }
-    .range {
-        width: 100%;
-        height: 2em;
-        line-height: 2em;
-        margin-top: 0.5em;
-    }
-    .range .from:hover,
-    .range .today:hover,
-    .range .to:hover {
-        background-color: #66c;
-    }
-    .range .from,
-    .range .today,
-    .range .to {
-        background-color: #333;
-        -moz-border-radius: 15px;
-        border-radius: 15px;
-        display: inline-block;
-        width: 33.33333333%;
-        text-align: center;
-    }
-    .week {
-        width: 100%;
-        height: 1.5em;
-        line-height: 1.5em;
-    }
-    .mode {
-        width: 100%;
-        height: 2em;
-        line-height: 2em;
-    }
-    .mode .fixed,
-    .mode .custom {
-        line-height: 2em;
-        height: 2em;
-        display: inline-block;
-        width: 48%;
-        margin: 1%;
-        text-align: center;
-        -moz-border-radius: 15px;
-        border-radius: 15px;
-        background-color: #333;
-    }
-
-    .mode .selected,
-    .mode .selected {
-        background-color: #6c6;
-    }
-
-    .mode .fixed:hover,
-    .mode .custom:hover {
-        background-color: #66c;
-    }
-    </style>
+    <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 <body>
+    <div class="menu">
+        <a href="./index.html" class="active">Basic</a>
+        <a href="./index-ko.html">Knockout</a>
+    </div>
+
     <div id="rangepicker"></div>
+
+    <div class="rangedisplay">
+        <span class="datefrom">foo</span>
+        to
+        <span class="dateto">bar</span>
+    </div>
 
     <script type="text/javascript">
         $(function () {
-            $('#rangepicker').rangepicker();
+            $("#rangepicker").rangepicker({
+                onUpdate: function (newRange) {
+                    console.log('change', newRange);
+                    $(".datefrom").html(newRange[0].strftime('%Y %b %d'));
+                    $(".dateto").html(newRange[1].strftime('%Y %b %d'));
+                }
+            });
         });
     </script>
 </body>

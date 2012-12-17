@@ -1,0 +1,43 @@
+<html>
+<head>
+    <title>rangepicker</title>
+    <script src="./vendor/jquery.min.js"></script>
+    <script src="./vendor/ko.min.js"></script>
+    <script src="./vendor/strftime.js"></script>
+    <script src="./jquery-rangepicker.js"></script>
+    <script src="./jquery-rangepicker-ko.js"></script>
+    <link rel="stylesheet" type="text/css" href="./style.css">
+</head>
+<body>
+    <div class="menu">
+        <a href="./index.html">Basic</a>
+        <a href="./index-ko.html" class="active">Knockout</a>
+    </div>
+
+    <div data-bind="rangepicker: dateRange"></div>
+
+    <div class="rangedisplay">
+        <span class="datefrom" data-bind="strftime: dateFrom, dateFormat: '%Y %b %d'">foo</span>
+        to
+        <span class="dateto" data-bind="strftime: dateTo, dateFormat: '%Y %b %d'"></span>
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            var ViewModel = function() {
+                self = this;
+
+                this.dateRange = ko.observable();
+                this.dateFrom = ko.computed(function () {
+                    if (this.dateRange()) { return this.dateRange()[0] }
+                }, this);
+                this.dateTo = ko.computed(function () {
+                    if (this.dateRange()) { return this.dateRange()[1] }
+                }, this)
+            };
+
+            ko.applyBindings(new ViewModel())
+        });
+    </script>
+</body>
+</html>
