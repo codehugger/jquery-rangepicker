@@ -1,6 +1,6 @@
 (function ($) {
     /*
-        strftime for Javascript
+        jquery-rangepicker
         Copyright (c) 2012, Bjarki Gudlaugsson (codehugger) <codehugger@codehuggers.com>
         All rights reserved.
 
@@ -110,7 +110,7 @@
         /*
          * event handler for clicking a day in the calendar
          */
-        function dateSelected(e) {
+        function dayClicked(e) {
             // fetch the selected date from the id of the element
             selectedDate = new Date($(this).attr('id'));
 
@@ -132,6 +132,12 @@
 
             // update the dateFrom and dateTo
             updateRange();
+
+            // follow display
+            if ((periodType === PERIOD_CUSTOM && followCustom) ||
+                (periodType !== PERIOD_CUSTOM && followFixed)) {
+                displayedDate = selectedDate.startOfMonth();
+            }
 
             // display the component
             render();
@@ -300,7 +306,7 @@
 
             if ((minDate === null || date > minDate) &&
                 (maxDate === null || date < maxDate)) {
-                day_node.on('click', dateSelected);
+                day_node.on('click', dayClicked);
             } else {
                 day_node.on('click', function (e) { e.preventDefault(); });
                 day_node.addClass('disabled');
@@ -560,6 +566,8 @@
             displayFormat       = opts.labelFormat      || '%B %Y';
             minDate             = opts.minDate          || null;
             maxDate             = opts.maxDate          || new Date();
+            followFixed         = opts.followFixed      || false;
+            followCustom        = opts.followCustom     || false;
 
             // set templates for calendar display
             rootTemplate        = opts.rootTemplate     || '<div class="rangepicker"></div>';
