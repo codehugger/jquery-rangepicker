@@ -21,7 +21,8 @@ body {
     text-align: center;
 }
 .nav .active {
-    background-color: #ccc;
+    background-color: #666;
+    color: #fff;
 }
 .nav a {
     display: inline-block;
@@ -36,7 +37,8 @@ body {
     color: #000;
 }
 .nav a:hover {
-    background-color: #eee;
+    background-color: #666;
+    color: #fff;
 }
 .rangedisplay {
     width: 20em;
@@ -80,7 +82,8 @@ body {
     color: #fff;
 }
 .day:hover {
-    background-color: #66c;
+    background-color: #ccc;
+    color: #000;
 }
 .navigation {
     width: 100%;
@@ -102,7 +105,8 @@ body {
 }
 .navigation .prev:hover,
 .navigation .next:hover {
-    background-color: #66c;
+    background-color: #ccc;
+    color: #000;
 }
 .navigation .display {
     color: #eee;
@@ -121,7 +125,8 @@ body {
 .range .from:hover,
 .range .today:hover,
 .range .to:hover {
-    background-color: #66c;
+    background-color: #ccc;
+    color: #000;
 }
 .range .from,
 .range .today,
@@ -157,12 +162,13 @@ body {
     background-color: #333;
 }
 
-.mode .selected,
-.mode .selected {
-    background-color: #6c6;
+.mode .active,
+.mode .active {
+    background-color: #666;
 }
 
 .mode .fixed:hover,
 .mode .custom:hover {
-    background-color: #66c;
+    background-color: #ccc;
+    color: #000;
 }

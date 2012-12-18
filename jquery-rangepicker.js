@@ -150,6 +150,9 @@
             // start the period type cycle
             periodType = PERIOD_DAY;
 
+            // try to realize the period type if the current custom selection presents a fixed period
+            realizePeriodType();
+
             // move the display of the calendar to the fromDate
             displayedDate = dateFrom.startOfMonth();
 
@@ -489,6 +492,31 @@
             }
         }
 
+        function realizePeriodType() {
+            from = dateFrom.startOfDay();
+            to = dateTo.startOfDay();
+
+            if (from === to &&
+                periodType !== PERIOD_CUSTOM) {
+                periodType = PERIOD_DAY;
+            }
+            else if (from.getDay() === 0 &&
+                to.getDay() === 6 &&
+                from.getWeek() === to.getWeek() &&
+                periodType !== PERIOD_CUSTOM) {
+                periodType = PERIOD_WEEK;
+            }
+            else if (from.getMonth() === to.getMonth() &&
+                from.getDate() === 1 &&
+                (to.getDate() === from.daysInMonth() || to.getDate() === maxDate.getDate()) &&
+                periodType !== PERIOD_CUSTOM) {
+                periodType = PERIOD_MONTH;
+            }
+            else {
+                selectingLast = false;
+            }
+        }
+
         /*
          * constructs and displays the rangepicker
          */
@@ -573,30 +601,9 @@
             });
 
             if (dateFrom && dateTo) {
-                from = dateFrom.startOfDay();
-                to = dateTo.startOfDay();
-
                 periodType = PERIOD_CUSTOM;
 
-                if (from === to &&
-                    periodType !== PERIOD_CUSTOM) {
-                    periodType = PERIOD_DAY;
-                }
-                else if (from.getDay() === 0 &&
-                    to.getDay() === 6 &&
-                    from.getWeek() === to.getWeek() &&
-                    periodType !== PERIOD_CUSTOM) {
-                    periodType = PERIOD_WEEK;
-                }
-                else if (from.getMonth() === to.getMonth() &&
-                    from.getDate() === 1 &&
-                    to.getDate() === from.daysInMonth() &&
-                    periodType !== PERIOD_CUSTOM) {
-                    periodType = PERIOD_MONTH;
-                }
-                else {
-                    selectingLast = false;
-                }
+                realizePeriodType();
 
                 currentDate = dateFrom.startOfDay();
             }
