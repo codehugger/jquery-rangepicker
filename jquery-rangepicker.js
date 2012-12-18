@@ -101,11 +101,11 @@
 
         // declare ui templates
         var rootTemplate, calendarTemplate, monthTemplate, weekTemplate, dayTemplate,
-            navTemplate, prevTemplate, labelTemplate, nextTemplate,
+            navTemplate, prevTemplate, displayTemplate, nextTemplate,
             modeTemplate, fixedTemplate, customTemplate;
 
         // declare ui element classes
-        var selectedClass, includedClass, todayClass, disabledClass, enabledClass, activeClass;
+        var selectedClass, includedClass, todayClass, disabledClass, activeClass;
 
         /*
          * event handler for clicking a day in the calendar
@@ -298,9 +298,6 @@
             if (date.getMonth() !== displayedDate.getMonth()) {
                 day_node.addClass(disabledClass);
             }
-            else {
-                day_node.addClass(enabledClass);
-            }
 
             // register click event on date
 
@@ -390,7 +387,7 @@
             // initialize elements
             var nav_node = $(navTemplate);
             var prev_node = $(prevTemplate);
-            var label_node = $(labelTemplate).html(displayedDate.strftime(displayFormat));
+            var label_node = $(displayTemplate).html(displayedDate.strftime(displayFormat));
             var next_node = $(nextTemplate);
 
             // register events
@@ -559,7 +556,7 @@
             dateTo              = opts.dateTo           || currentDate.endOfDay();
             periodType          = opts.periodType       || 'day';
             displayedDate       = opts.displayedDate    || currentDate.startOfMonth();
-            onUpdate            = opts.onUpdate         || function (range) {};
+            onUpdate            = opts.onUpdate         || undefined;
             cyclePeriodTypes    = opts.cycleModes       || true;
             selectingLast       = false;
             valueFormat         = opts.dateFormat       || '%Y-%m-%d';
@@ -579,7 +576,7 @@
             // set templates for navigation display
             navTemplate         = opts.navTemplate      || '<div class="navigation"></div>';
             prevTemplate        = opts.prevTemplate     || '<a href="#" class="prev">&lt;</a>';
-            labelTemplate       = opts.labelTemplate    || '<span class="display"></span>';
+            displayTemplate     = opts.displayTemplate  || '<span class="display"></span>';
             nextTemplate        = opts.nextTemplate     || '<a href="#" class="next">&gt;</a>';
 
             // set templates for range display
@@ -595,7 +592,6 @@
 
             // set classes for logical elements
             disabledClass       = opts.disabledClass    || 'disabled';
-            enabledClass        = opts.enabledClass     || 'enabled';
             selectedClass       = opts.selectedClass    || 'selected';
             includedClass       = opts.includedClass    || 'included';
             activeClass         = opts.activeClass      || 'active';
