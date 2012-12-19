@@ -20,6 +20,10 @@ _Principle-Of-Least-Astonishment_.
 </script>
 ```
 
+## Live Example
+
+There is a live demo running the latest build at [jsFiddle](http://jsfiddle.net/MPeqP/2/)
+
 ## Requirements
 
 The jquery-rangepicker requires strftime to be implemented on the Date object. There are numerious ways to do this and you can even write your own :) However this is the one I use
