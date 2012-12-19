@@ -20,6 +20,13 @@ _Principle-Of-Least-Astonishment_.
 </script>
 ```
 
+## Requirements
+
+The jquery-rangepicker requires strftime to be implemented on the Date object. There are numerious ways to do this and you can even write your own :) However this is the one I use
+and recommend:
+
+<http://hacks.bluesmoon.info/strftime/>
+
 ## Options
 
 **currentDate:** the currentDate for the rangepicker (default: new Date())

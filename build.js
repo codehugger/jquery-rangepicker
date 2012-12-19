@@ -1,28 +1,50 @@
 var compressor = require('node-minify');
 var fs = require('fs');
 
-fs.exists('./build', function (exists) {
-  if (!exists) {
-    fs.mkdirSync('./build');
-  }
-});
-
+/*
+ * jquery-rangepicker.min.js
+ */
 new compressor.minify({
     type: 'yui-js',
-    fileIn: ['./vendor/strftime.js', './jquery-rangepicker.js'],
-    fileOut: './build/rangepicker.min.js',
-    callback: function(err){
+    fileIn: './src/jquery-rangepicker.js',
+    fileOut: './jquery-rangepicker.min.js',
+    callback: function(err) {
         if (err) { console.log(err); }
-        else { console.log(this.fileOut); }
+        else {
+            // include LICENSE
+            new compressor.minify({
+                type: 'no-compress',
+                fileIn: [
+                    'LICENSE',
+                    './jquery-rangepicker.min.js'],
+                fileOut: './jquery-rangepicker.min.js',
+                callback: function(err) {
+                    console.log(this.fileOut);
+                }
+            });
+        }
     }
 });
 
+/*
+ * jquery-rangepicker-ko.min.js
+ */
 new compressor.minify({
     type: 'yui-js',
-    fileIn: ['./vendor/strftime.js', './jquery-rangepicker.js', './jquery-rangepicker-ko.js'],
-    fileOut: './build/rangepicker-ko.min.js',
-    callback: function(err){
+    fileIn: './src/jquery-rangepicker-ko.js',
+    fileOut: './jquery-rangepicker-ko.min.js',
+    callback: function(err) {
         if (err) { console.log(err); }
-        else { console.log(this.fileOut); }
+        else {
+            // include LICENSE
+            new compressor.minify({
+                type: 'no-compress',
+                fileIn: ['LICENSE', './jquery-rangepicker-ko.min.js'],
+                fileOut: './jquery-rangepicker-ko.min.js',
+                callback: function(err) {
+                    console.log(this.fileOut);
+                }
+            });
+        }
     }
 });

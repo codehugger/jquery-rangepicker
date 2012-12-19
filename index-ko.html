@@ -1,11 +1,12 @@
+<!DOCTYPE html>
 <html>
 <head>
     <title>jquery-rangepicker</title>
     <script src="./vendor/jquery.min.js"></script>
     <script src="./vendor/ko.min.js"></script>
     <script src="./vendor/strftime.js"></script>
-    <script src="./jquery-rangepicker.js"></script>
-    <script src="./jquery-rangepicker-ko.js"></script>
+    <script src="./src/jquery-rangepicker.js"></script>
+    <script src="./src/jquery-rangepicker-ko.js"></script>
     <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 <body>
@@ -17,9 +18,9 @@
     <div data-bind="rangepicker: dateRange"></div>
 
     <div class="rangedisplay">
-        <span class="datefrom" data-bind="strftime: dateFrom, dateFormat: '%Y %b %d'">FROM</span>
+        <span class="datefrom" data-bind="strftime: dateFrom, dateFormat: '%Y %b %d'"></span>
         -
-        <span class="dateto" data-bind="strftime: dateTo, dateFormat: '%Y %b %d'">TO</span>
+        <span class="dateto" data-bind="strftime: dateTo, dateFormat: '%Y %b %d'"></span>
     </div>
 
     <script type="text/javascript">
@@ -27,7 +28,7 @@
             var ViewModel = function() {
                 self = this;
 
-                this.dateRange = ko.observable([new Date(2012, 11, 5).startOfWeek(), new Date(2012, 11, 5).endOfWeek()]);
+                this.dateRange = ko.observable();
                 this.dateFrom = ko.computed(function () {
                     if (this.dateRange()) { return this.dateRange()[0] }
                 }, this);
