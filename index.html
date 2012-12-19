@@ -24,9 +24,8 @@
 
     <script type="text/javascript">
         $(function () {
-            var now = new Date();
-            now.setFullYear(now.getFullYear() - 1);
-            $("#rangepicker").rangepicker({
+            $("#rangepicker").rangepicker();
+            /*$("#rangepicker").rangepicker({
                 dateFrom: now.startOfWeek(),
                 dateTo: now.endOfWeek(),
                 periodType: 'custom',
@@ -34,7 +33,7 @@
                     $(".datefrom").html(newRange[0].strftime('%Y %b %d'));
                     $(".dateto").html(newRange[1].strftime('%Y %b %d'));
                 }
-            });
+            });*/
         });
     </script>
 </body>
