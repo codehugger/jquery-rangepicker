@@ -615,7 +615,7 @@
             displayedDate = dateFrom.startOfMonth();
 
             // trigger initial update of range
-            onUpdate([dateFrom, dateTo]);
+            if (onUpdate) { onUpdate([dateFrom, dateTo]); }
 
             // initial build
             render();
