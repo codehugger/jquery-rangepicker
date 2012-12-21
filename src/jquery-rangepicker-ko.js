@@ -17,6 +17,9 @@ ko.bindingHandlers.rangepicker = {
         var from = new Date();
         var to = new Date();
 
+        var onUpdate = allBindings.onUpdate || function (newRange) { value(newRange); };
+        var onInit = allBindings.onInit;
+
         if (valueUnwrapped.length == 2) {
             from = valueUnwrapped[0];
             to = valueUnwrapped[1];
@@ -24,9 +27,7 @@ ko.bindingHandlers.rangepicker = {
 
         // Now manipulate the DOM element
         $(element).rangepicker({
-            onUpdate: function (newRange) {
-                value(newRange);
-            },
+            onUpdate: onUpdate,
             dateFrom: from,
             dateTo: to
         });

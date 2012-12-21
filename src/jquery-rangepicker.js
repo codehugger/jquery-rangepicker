@@ -435,7 +435,7 @@
                     }
 
                     // we only notify listener when the complete range has been determined
-                    if (onUpdate) { onUpdate([dateFrom, dateTo]); }
+                    triggerOnUpdate();
                 }
                 else {
                     dateFrom = currentDate.startOfDay();
@@ -472,8 +472,22 @@
                 dateFrom = from;
                 dateTo = to;
 
-                if (onUpdate) { onUpdate([dateFrom, dateTo]); }
+                triggerOnUpdate();
             }
+        }
+
+        /*
+         * triggers the onUpdate callback
+         */
+        function triggerOnUpdate() {
+            if (onUpdate) { onUpdate([dateFrom, dateTo]); }
+        }
+
+        /*
+         * triggers the onInit callback
+         */
+        function triggerOnInit() {
+            if (onInit) { onInit([dateFrom, dateTo]); }
         }
 
         function realizePeriodType() {
@@ -537,6 +551,7 @@
             dateTo              = opts.dateTo           || currentDate.endOfDay();
             periodType          = opts.periodType       || 'day';
             displayedDate       = opts.displayedDate    || currentDate.startOfMonth();
+            onInit              = opts.onInit           || undefined;
             onUpdate            = opts.onUpdate         || undefined;
             cyclePeriodTypes    = opts.cycleModes       || true;
             selectingLast       = false;
@@ -593,12 +608,10 @@
                 currentDate = dateFrom.startOfDay();
             }
 
-            console.log(periodType == PERIOD_WEEK);
-
             displayedDate = dateFrom.startOfMonth();
 
             // trigger initial update of range
-            if (onUpdate) { onUpdate([dateFrom, dateTo]); }
+            triggerOnInit();
 
             // initial build
             render();
