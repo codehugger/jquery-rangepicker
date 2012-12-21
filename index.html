@@ -23,6 +23,8 @@
     <script type="text/javascript">
         $(function () {
             $("#rangepicker").rangepicker({
+                dateFrom: new Date(2012, 11, 2),
+                dateTo: new Date(2012, 11, 8),
                 onUpdate: function (newRange) {
                     $(".datefrom").html(newRange[0].strftime('%Y %b %d'));
                     $(".dateto").html(newRange[1].strftime('%Y %b %d'));

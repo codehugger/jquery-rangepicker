@@ -586,12 +586,14 @@
             });
 
             if (dateFrom && dateTo) {
-                periodType = PERIOD_CUSTOM;
+                periodType = PERIOD_DAY;
 
                 realizePeriodType();
 
                 currentDate = dateFrom.startOfDay();
             }
+
+            console.log(periodType == PERIOD_WEEK);
 
             displayedDate = dateFrom.startOfMonth();
 

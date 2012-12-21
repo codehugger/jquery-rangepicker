@@ -17,7 +17,7 @@ ko.bindingHandlers.rangepicker = {
         var from = new Date();
         var to = new Date();
 
-        if (valueUnwrapped) {
+        if (valueUnwrapped.length == 2) {
             from = valueUnwrapped[0];
             to = valueUnwrapped[1];
         }

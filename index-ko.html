@@ -28,7 +28,7 @@
             var ViewModel = function() {
                 self = this;
 
-                this.dateRange = ko.observable();
+                this.dateRange = ko.observable([new Date(2012, 11, 2), new Date(2012, 11, 8)]);
                 this.dateFrom = ko.computed(function () {
                     if (this.dateRange()) { return this.dateRange()[0] }
                 }, this);
