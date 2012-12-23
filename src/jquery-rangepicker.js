@@ -137,9 +137,6 @@
             // start the period type cycle
             periodType = PERIOD_DAY;
 
-            // try to realize the period type if the current custom selection presents a fixed period
-            realizePeriodType();
-
             // move the display of the calendar to the fromDate
             displayedDate = dateFrom.startOfMonth();
 
@@ -491,11 +488,11 @@
         }
 
         function realizePeriodType() {
-            from = dateFrom.startOfDay();
-            to = dateTo.startOfDay();
+            var from = dateFrom.startOfDay();
+            var to = dateTo.startOfDay();
 
-            if (from === to &&
-                periodType !== PERIOD_CUSTOM) {
+            if (from.valueOf() == to.valueOf() &&
+                periodType != PERIOD_CUSTOM) {
                 periodType = PERIOD_DAY;
             }
             else if (from.getDay() === 0 &&
@@ -512,6 +509,7 @@
             }
             else {
                 selectingLast = false;
+                periodType = PERIOD_CUSTOM;
             }
         }
 
@@ -546,52 +544,52 @@
             if (opts === undefined) { opts = {}; }
 
             // set internals according to options and defaults
-            currentDate         = opts.currentDate      || new Date().startOfDay();
-            dateFrom            = opts.dateFrom         || currentDate.startOfDay();
-            dateTo              = opts.dateTo           || currentDate.endOfDay();
-            periodType          = opts.periodType       || 'day';
-            displayedDate       = opts.displayedDate    || currentDate.startOfMonth();
-            onInit              = opts.onInit           || undefined;
-            onUpdate            = opts.onUpdate         || undefined;
-            cyclePeriodTypes    = opts.cycleModes       || true;
-            selectingLast       = false;
-            valueFormat         = opts.dateFormat       || '%Y-%m-%d';
-            displayFormat       = opts.labelFormat      || '%B %Y';
-            minDate             = opts.minDate          || null;
-            maxDate             = opts.maxDate          || new Date();
-            followFixed         = opts.followFixed      || false;
-            followCustom        = opts.followCustom     || false;
+            currentDate      = opts.currentDate      || new Date().startOfDay();
+            dateFrom         = opts.dateFrom         || currentDate.startOfDay();
+            dateTo           = opts.dateTo           || currentDate.endOfDay();
+            periodType       = opts.periodType       || 'day';
+            displayedDate    = opts.displayedDate    || currentDate.startOfMonth();
+            onInit           = opts.onInit           || undefined;
+            onUpdate         = opts.onUpdate         || undefined;
+            cyclePeriodTypes = opts.cycleModes       || true;
+            selectingLast    = false;
+            valueFormat      = opts.dateFormat       || '%Y-%m-%d';
+            displayFormat    = opts.labelFormat      || '%B %Y';
+            minDate          = opts.minDate          || null;
+            maxDate          = opts.maxDate          || new Date();
+            followFixed      = opts.followFixed      || true;
+            followCustom     = opts.followCustom     || false;
 
             // set templates for calendar display
-            rootTemplate        = opts.rootTemplate     || '<div class="rangepicker"></div>';
-            dayTemplate         = opts.dayTemplate      || '<a href="#" class="day"></a>';
-            weekTemplate        = opts.weekTemplate     || '<div class="week"></div>';
-            monthTemplate       = opts.monthTemplate    || '<div class="month"></div>';
-            calendarTemplate    = opts.calendarTemplate || '<div class="calendar"></div>';
+            rootTemplate     = opts.rootTemplate     || '<div class="rangepicker"></div>';
+            dayTemplate      = opts.dayTemplate      || '<a href="#" class="day"></a>';
+            weekTemplate     = opts.weekTemplate     || '<div class="week"></div>';
+            monthTemplate    = opts.monthTemplate    || '<div class="month"></div>';
+            calendarTemplate = opts.calendarTemplate || '<div class="calendar"></div>';
 
             // set templates for navigation display
-            navTemplate         = opts.navTemplate      || '<div class="navigation"></div>';
-            prevTemplate        = opts.prevTemplate     || '<a href="#" class="prev">&lt;</a>';
-            displayTemplate     = opts.displayTemplate  || '<span class="display"></span>';
-            nextTemplate        = opts.nextTemplate     || '<a href="#" class="next">&gt;</a>';
+            navTemplate      = opts.navTemplate      || '<div class="navigation"></div>';
+            prevTemplate     = opts.prevTemplate     || '<a href="#" class="prev">&lt;</a>';
+            displayTemplate  = opts.displayTemplate  || '<span class="display"></span>';
+            nextTemplate     = opts.nextTemplate     || '<a href="#" class="next">&gt;</a>';
 
             // set templates for range display
-            rangeTemplate       = opts.rangeTemplate    || '<div class="range"></div>';
-            fromTemplate        = opts.fromTemplate     || '<a href="#" class="from"></a>';
-            todayTemplate       = opts.todayTemplate    || '<a href="#" class="today">Today</a>';
-            toTemplate          = opts.toTemplate       || '<a href="#" class="to"></a>';
+            rangeTemplate    = opts.rangeTemplate    || '<div class="range"></div>';
+            fromTemplate     = opts.fromTemplate     || '<a href="#" class="from"></a>';
+            todayTemplate    = opts.todayTemplate    || '<a href="#" class="today">Today</a>';
+            toTemplate       = opts.toTemplate       || '<a href="#" class="to"></a>';
 
             // set templates for mode display
-            modeTemplate        = opts.modeTemplate     || '<div class="mode"></div>';
-            fixedTemplate       = opts.fixedTemplate    || '<a href="#" class="fixed">Fixed</a>';
-            customTemplate      = opts.customTemplate   || '<a href="#" class="custom">Custom</a>';
+            modeTemplate     = opts.modeTemplate     || '<div class="mode"></div>';
+            fixedTemplate    = opts.fixedTemplate    || '<a href="#" class="fixed">Fixed</a>';
+            customTemplate   = opts.customTemplate   || '<a href="#" class="custom">Custom</a>';
 
             // set classes for logical elements
-            disabledClass       = opts.disabledClass    || 'disabled';
-            selectedClass       = opts.selectedClass    || 'selected';
-            includedClass       = opts.includedClass    || 'included';
-            activeClass         = opts.activeClass      || 'active';
-            todayClass          = opts.todayClass       || 'today';
+            disabledClass    = opts.disabledClass    || 'disabled';
+            selectedClass    = opts.selectedClass    || 'selected';
+            includedClass    = opts.includedClass    || 'included';
+            activeClass      = opts.activeClass      || 'active';
+            todayClass       = opts.todayClass       || 'today';
 
             // allow configuration to use strings instead of cryptic numbers used internally
             $.each(function (i, value) {
