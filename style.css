@@ -1,175 +1,128 @@
 body {
-    font-family: Verdana;
-}
-.rangepicker {
-    width: 20em;
-    margin: 2em auto;
-    background: #000;
-    color: #fff;
-    -moz-border-radius: 15px;
-    -webkit-border-radius: 15px;
-    border-radius: 15px;
-    padding: 0.5em;
-    -moz-box-shadow:    6px 6px 6px 2px #666;
-    -webkit-box-shadow: 6px 6px 6px 2px #666;
-    box-shadow:         6px 6px 6px 2px #666;
-    font-size: 90%;
-}
-.nav {
-    width: 20em;
-    margin: 2em auto;
-    text-align: center;
-}
-.nav .active {
-    background-color: #666;
-    color: #fff;
-}
-.nav a {
-    display: inline-block;
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
-    border-radius: 15px;
-    width: 49%;
-    height: 2em;
-    line-height: 2em;
-    text-decoration: none;
-    font-weight: bold;
-    color: #000;
-}
-.nav a:hover {
-    background-color: #666;
-    color: #fff;
-}
-.rangedisplay {
-    width: 20em;
-    margin: 2em auto;
-    text-align: center;
-    color: #000;
-}
-.datefrom,
-.dateto {
-    font-weight: bold;
-}
-.rangepicker a {
-    color: #eee;
-    text-decoration: none;
-}
-.day {
-    display: inline-block;
-    vertical-align: middle;
-    text-align: center;
-    width: 14.28571428571429%;
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
-    border-radius: 15px;
+    font-family: Helvetica, Arial, Verdana, Sans-serif;
 }
 
-.calendar .disabled {
-    color: #999;
-}
-.calendar {
-    margin: 1em 0;
-}
-.calendar .included {
-    background-color: #666;
-    color: #fff;
-}
-.calendar .today {
-    background-color: #6c6;
-}
-.calendar .selected {
-    background-color: #c66;
-    color: #fff;
-}
-.day:hover {
-    background-color: #ccc;
-    color: #000;
-}
-.navigation {
-    width: 100%;
-    height: 2em;
-    line-height: 2em;
-}
-.navigation .prev,
-.navigation .next,
-.navigation .display {
-    display: inline-block;
-    text-align: center;
-}
-.navigation .prev,
-.navigation .next {
-    width: 20%;
-    -moz-border-radius: 15px;
-    -webkit-border-radius: 15px;
-    border-radius: 15px;
-}
-.navigation .prev:hover,
-.navigation .next:hover {
-    background-color: #ccc;
-    color: #000;
-}
-.navigation .display {
-    color: #eee;
+a {
+    text-decoration: none;
     font-weight: bold;
-    width: 60%;
-}
-.navigation .disabled {
-    display: none;
-}
-.range {
-    width: 100%;
-    height: 2em;
-    line-height: 2em;
-    margin-top: 0.5em;
-}
-.range .from:hover,
-.range .today:hover,
-.range .to:hover {
-    background-color: #ccc;
     color: #000;
 }
-.range .from,
-.range .today,
-.range .to {
-    background-color: #333;
-    -moz-border-radius: 15px;
-    -webkit-border-radius: 15px;
-    border-radius: 15px;
-    display: inline-block;
-    width: 33.33333333%;
-    text-align: center;
+
+a:hover {
+    text-decoration: underline;
 }
-.week {
-    width: 100%;
+
+.nav {
+    width: 21em;
+    margin: 3em auto 1em auto;
+    text-align: center;
     height: 1.5em;
     line-height: 1.5em;
 }
-.mode {
-    width: 100%;
-    height: 2em;
-    line-height: 2em;
+
+.nav a {
+    margin: 1em;
 }
+
+.nav .active {
+    text-decoration: underline;
+}
+
+.container {
+    margin: 0 auto;
+    width: 21em;
+}
+
+.rangepicker {
+    margin: 2em auto;
+    text-align: center;
+    background-color: #eee;
+    padding: 1em;
+    border-radius: 10px;
+}
+
+.navigation .prev,
+.navigation .next {
+    display: inline-block;
+    width: 10%;
+    background: #eee;
+    height: 1.5em;
+    line-height: 1.5em;
+}
+
+.navigation .display {
+    display: inline-block;
+    width: 60%;
+    background: #eee;
+    height: 1.5em;
+    line-height: 1.5em;
+}
+
+.range {
+    padding: 0.5em 0;
+}
+
+.range .from,
+.range .today,
+.range .to {
+    width: 33.333333%;
+    display: inline-block;
+    background: #eee;
+    height: 1.5em;
+    line-height: 1.5em;
+}
+
+.calendar .day {
+    display: inline-block;
+    width: 14.285714%;
+    background: #eee;
+    height: 1.5em;
+    line-height: 1.5em;
+}
+
+.calendar .included {
+    background-color: #999;
+}
+
+.calendar .today {
+    background-color: #9c9;
+}
+
+.calendar .selected {
+    background-color: #c99;
+}
+
+.calendar .disabled {
+    color: #ccc;
+    font-weight: normal;
+}
+
+.calendar .disabled:hover {
+    color: #333;
+    font-weight: bold;
+}
+
+.rangepicker .mode {
+    padding-top: 0.5em;
+}
+
 .mode .fixed,
 .mode .custom {
-    line-height: 2em;
-    height: 2em;
     display: inline-block;
-    width: 48%;
-    margin: 1%;
-    text-align: center;
-    -moz-border-radius: 15px;
-    -webkit-border-radius: 15px;
-    border-radius: 15px;
-    background-color: #333;
+    width: 50%;
+    background: #eee;
+    height: 1.5em;
+    line-height: 1.5em;
 }
 
-.mode .active,
 .mode .active {
-    background-color: #666;
+    text-decoration: underline;
 }
 
-.mode .fixed:hover,
-.mode .custom:hover {
-    background-color: #ccc;
-    color: #000;
+.rangedisplay {
+    margin: 2em auto;
+    width: 21em;
+    text-align: center;
+    height: 1.5em;
+    line-height: 1.5em;
 }

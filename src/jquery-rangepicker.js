@@ -140,6 +140,9 @@
             // move the display of the calendar to the fromDate
             displayedDate = dateFrom.startOfMonth();
 
+            // try to realize a fixed period from the selected custom period
+            realizePeriodType();
+
             // update the dateFrom and dateTo
             updateRange();
 
@@ -156,6 +159,9 @@
         function customClicked(e) {
             // initialize custom mode
             periodType = PERIOD_CUSTOM;
+
+            // make sure we have the correct selection state
+            selectingLast = false;
 
             // display the component
             render();
@@ -192,6 +198,28 @@
                 currentMonth = 0;
             }
             displayedDate.setMonth(currentMonth);
+
+            // display the component
+            render();
+
+            // stop event from propagating
+            e.preventDefault();
+        }
+
+        function prevYear(e) {
+            // decrement dislayed year
+            displayedDate.setFullYear(displayedDate.getFullYear() - 1);
+
+            // display the component
+            render();
+
+            // stop event from propagating
+            e.preventDefault();
+        }
+
+        function nextYear(e) {
+            // increment displayed year
+            displayedDate.setFullYear(displayedDate.getFullYear() + 1);
 
             // display the component
             render();
@@ -364,28 +392,50 @@
         function buildNav() {
             // initialize elements
             var nav_node = $(navTemplate);
-            var prev_node = $(prevTemplate);
+            var prev_year_node = $(prevYearTemplate);
+            var prev_month_node = $(prevMonthTemplate);
             var label_node = $(displayTemplate).html(displayedDate.strftime(displayFormat));
-            var next_node = $(nextTemplate);
+            var next_month_node = $(nextMonthTemplate);
+            var next_year_node = $(nextYearTemplate);
 
-            // register events
-            if (minDate === null || minDate < displayedDate) {
-                prev_node.on('click', prevMonth);
+            // register events for previous year
+            if (minDate === null || minDate.getFullYear() < displayedDate.getFullYear()) {
+                prev_year_node.on('click', prevYear);
             } else {
-                prev_node.on('click', function (e) { e.preventDefault(); });
-                prev_node.addClass('disabled');
+                prev_year_node.on('click', function (e) { e.preventDefault(); });
+                prev_year_node.addClass('disabled');
             }
-            if (maxDate === null || maxDate > displayedDate.endOfMonth()) {
-                next_node.on('click', nextMonth);
+
+            // register events for previous month
+            if (minDate === null || minDate < displayedDate) {
+                prev_month_node.on('click', prevMonth);
             } else {
-                next_node.on('click', function (e) { e.preventDefault(); });
-                next_node.addClass('disabled');
+                prev_month_node.on('click', function (e) { e.preventDefault(); });
+                prev_month_node.addClass('disabled');
+            }
+
+            // register events for next month
+            if (maxDate === null || maxDate > displayedDate.endOfMonth()) {
+                next_month_node.on('click', nextMonth);
+            } else {
+                next_month_node.on('click', function (e) { e.preventDefault(); });
+                next_month_node.addClass('disabled');
+            }
+
+            // register events for next year
+            if (maxDate === null || maxDate.getFullYear() > displayedDate.getFullYear()) {
+                next_year_node.on('click', nextYear);
+            } else {
+                next_year_node.on('click', function (e) { e.preventDefault(); });
+                next_year_node.addClass('disabled');
             }
 
             // construct navigation area
-            nav_node.append(prev_node);
+            nav_node.append(prev_year_node);
+            nav_node.append(prev_month_node);
             nav_node.append(label_node);
-            nav_node.append(next_node);
+            nav_node.append(next_month_node);
+            nav_node.append(next_year_node);
 
             return nav_node;
         }
@@ -544,52 +594,54 @@
             if (opts === undefined) { opts = {}; }
 
             // set internals according to options and defaults
-            currentDate      = opts.currentDate      || new Date().startOfDay();
-            dateFrom         = opts.dateFrom         || currentDate.startOfDay();
-            dateTo           = opts.dateTo           || currentDate.endOfDay();
-            periodType       = opts.periodType       || 'day';
-            displayedDate    = opts.displayedDate    || currentDate.startOfMonth();
-            onInit           = opts.onInit           || undefined;
-            onUpdate         = opts.onUpdate         || undefined;
-            cyclePeriodTypes = opts.cycleModes       || true;
-            selectingLast    = false;
-            valueFormat      = opts.dateFormat       || '%Y-%m-%d';
-            displayFormat    = opts.labelFormat      || '%B %Y';
-            minDate          = opts.minDate          || null;
-            maxDate          = opts.maxDate          || new Date();
-            followFixed      = opts.followFixed      || true;
-            followCustom     = opts.followCustom     || false;
+            currentDate       = opts.currentDate      || new Date().startOfDay();
+            dateFrom          = opts.dateFrom         || currentDate.startOfDay();
+            dateTo            = opts.dateTo           || currentDate.endOfDay();
+            periodType        = opts.periodType       || 'day';
+            displayedDate     = opts.displayedDate    || currentDate.startOfMonth();
+            onInit            = opts.onInit           || undefined;
+            onUpdate          = opts.onUpdate         || undefined;
+            cyclePeriodTypes  = opts.cycleModes       || true;
+            selectingLast     = false;
+            valueFormat       = opts.dateFormat       || '%Y-%m-%d';
+            displayFormat     = opts.labelFormat      || '%B %Y';
+            minDate           = opts.minDate          || null;
+            maxDate           = opts.maxDate          || new Date();
+            followFixed       = opts.followFixed      || true;
+            followCustom      = opts.followCustom     || false;
 
             // set templates for calendar display
-            rootTemplate     = opts.rootTemplate     || '<div class="rangepicker"></div>';
-            dayTemplate      = opts.dayTemplate      || '<a href="#" class="day"></a>';
-            weekTemplate     = opts.weekTemplate     || '<div class="week"></div>';
-            monthTemplate    = opts.monthTemplate    || '<div class="month"></div>';
-            calendarTemplate = opts.calendarTemplate || '<div class="calendar"></div>';
+            rootTemplate      = opts.rootTemplate     || '<div class="rangepicker"></div>';
+            dayTemplate       = opts.dayTemplate      || '<a href="#" class="day"></a>';
+            weekTemplate      = opts.weekTemplate     || '<div class="week"></div>';
+            monthTemplate     = opts.monthTemplate    || '<div class="month"></div>';
+            calendarTemplate  = opts.calendarTemplate || '<div class="calendar"></div>';
 
             // set templates for navigation display
-            navTemplate      = opts.navTemplate      || '<div class="navigation"></div>';
-            prevTemplate     = opts.prevTemplate     || '<a href="#" class="prev">&lt;</a>';
-            displayTemplate  = opts.displayTemplate  || '<span class="display"></span>';
-            nextTemplate     = opts.nextTemplate     || '<a href="#" class="next">&gt;</a>';
+            navTemplate       = opts.navTemplate      || '<div class="navigation"></div>';
+            prevYearTemplate  = opts.prevTemplate     || '<a href="#" class="prev">&laquo;</a>';
+            prevMonthTemplate = opts.prevTemplate     || '<a href="#" class="prev">&lsaquo;</a>';
+            displayTemplate   = opts.displayTemplate  || '<span class="display"></span>';
+            nextMonthTemplate = opts.nextTemplate     || '<a href="#" class="next">&rsaquo;</a>';
+            nextYearTemplate  = opts.nextTemplate     || '<a href="#" class="next">&raquo;</a>';
 
             // set templates for range display
-            rangeTemplate    = opts.rangeTemplate    || '<div class="range"></div>';
-            fromTemplate     = opts.fromTemplate     || '<a href="#" class="from"></a>';
-            todayTemplate    = opts.todayTemplate    || '<a href="#" class="today">Today</a>';
-            toTemplate       = opts.toTemplate       || '<a href="#" class="to"></a>';
+            rangeTemplate     = opts.rangeTemplate    || '<div class="range"></div>';
+            fromTemplate      = opts.fromTemplate     || '<a href="#" class="from"></a>';
+            todayTemplate     = opts.todayTemplate    || '<a href="#" class="today">Today</a>';
+            toTemplate        = opts.toTemplate       || '<a href="#" class="to"></a>';
 
             // set templates for mode display
-            modeTemplate     = opts.modeTemplate     || '<div class="mode"></div>';
-            fixedTemplate    = opts.fixedTemplate    || '<a href="#" class="fixed">Fixed</a>';
-            customTemplate   = opts.customTemplate   || '<a href="#" class="custom">Custom</a>';
+            modeTemplate      = opts.modeTemplate     || '<div class="mode"></div>';
+            fixedTemplate     = opts.fixedTemplate    || '<a href="#" class="fixed">Fixed</a>';
+            customTemplate    = opts.customTemplate   || '<a href="#" class="custom">Custom</a>';
 
             // set classes for logical elements
-            disabledClass    = opts.disabledClass    || 'disabled';
-            selectedClass    = opts.selectedClass    || 'selected';
-            includedClass    = opts.includedClass    || 'included';
-            activeClass      = opts.activeClass      || 'active';
-            todayClass       = opts.todayClass       || 'today';
+            disabledClass     = opts.disabledClass    || 'disabled';
+            selectedClass     = opts.selectedClass    || 'selected';
+            includedClass     = opts.includedClass    || 'included';
+            activeClass       = opts.activeClass      || 'active';
+            todayClass        = opts.todayClass       || 'today';
 
             // allow configuration to use strings instead of cryptic numbers used internally
             $.each(function (i, value) {
