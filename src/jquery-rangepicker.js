@@ -91,7 +91,7 @@
         /*
          * event handler for clicking a day in the calendar
          */
-        function dayClicked(e) {
+        self.dayClicked = function (e) {
             // fetch the selected date from the id of the element
             selectedDate = new Date($(this).attr('id'));
 
@@ -112,7 +112,7 @@
             currentDate = selectedDate;
 
             // update the dateFrom and dateTo
-            updateRange();
+            self.updateRange();
 
             // follow display
             if ((periodType === PERIOD_CUSTOM && followCustom) ||
@@ -121,16 +121,16 @@
             }
 
             // display the component
-            render();
+            self.render();
 
             // stop event from propagating
             e.preventDefault();
-        }
+        };
 
         /*
          * event handler for selecting fixed mode
          */
-        function fixedClicked(e) {
+        self.fixedClicked = function (e) {
             // save state from custom navigation
             currentDate = new Date(dateFrom);
 
@@ -141,22 +141,22 @@
             displayedDate = dateFrom.startOfMonth();
 
             // try to realize a fixed period from the selected custom period
-            realizePeriodType();
+            self.realizePeriodType();
 
             // update the dateFrom and dateTo
-            updateRange();
+            self.updateRange();
 
             // display the component
-            render();
+            self.render();
 
             // stop event from propagating
             e.preventDefault();
-        }
+        };
 
         /*
          * event handler for selecting custom mode
          */
-        function customClicked(e) {
+        self.customClicked = function (e) {
             // initialize custom mode
             periodType = PERIOD_CUSTOM;
 
@@ -164,16 +164,16 @@
             selectingLast = false;
 
             // display the component
-            render();
+            self.render();
 
             // stop event from propagating
             e.preventDefault();
-        }
+        };
 
         /*
          * event handler for clicking the 'back' button on the calendar
          */
-        function prevMonth(e) {
+        self.prevMonth = function (e) {
             var currentMonth = displayedDate.getMonth() - 1;
             if (currentMonth < 0) {
                 displayedDate.setFullYear(displayedDate.getFullYear() - 1);
@@ -182,16 +182,16 @@
             displayedDate.setMonth(currentMonth);
 
             // display the component
-            render();
+            self.render();
 
             // stop event from propagating
             e.preventDefault();
-        }
+        };
 
         /*
          * event handler for clicking the 'forward' button on the calendar
          */
-        function nextMonth(e) {
+        self.nextMonth = function (e) {
             var currentMonth = displayedDate.getMonth() + 1;
             if (currentMonth > 11) {
                 displayedDate.setFullYear(displayedDate.getFullYear() + 1);
@@ -200,72 +200,72 @@
             displayedDate.setMonth(currentMonth);
 
             // display the component
-            render();
+            self.render();
 
             // stop event from propagating
             e.preventDefault();
-        }
+        };
 
-        function prevYear(e) {
+        self.prevYear = function (e) {
             // decrement dislayed year
             displayedDate.setFullYear(displayedDate.getFullYear() - 1);
 
             // display the component
-            render();
+            self.render();
 
             // stop event from propagating
             e.preventDefault();
-        }
+        };
 
-        function nextYear(e) {
+        self.nextYear = function (e) {
             // increment displayed year
             displayedDate.setFullYear(displayedDate.getFullYear() + 1);
 
             // display the component
-            render();
+            self.render();
 
             // stop event from propagating
             e.preventDefault();
-        }
+        };
 
         /*
          * event handler for clicking the 'from' button on the calendar
          */
-        function fromClicked(e) {
+        self.fromClicked = function (e) {
             displayedDate = new Date(dateFrom.startOfMonth());
-            render();
+            self.render();
 
             // stop event from propagating
             e.preventDefault();
-        }
+        };
 
         /*
          * event handler for clicking the 'today' button on the calendar
          */
-        function todayClicked(e) {
+        self.todayClicked = function (e) {
             displayedDate = new Date(TODAY).startOfMonth();
-            render();
+            self.render();
 
             // stop event from propagating
             e.preventDefault();
-        }
+        };
 
         /*
          * event handler for clicking the 'to' button on the calendar
          */
-        function toClicked(e) {
+        self.toClicked = function (e) {
             displayedDate = new Date(dateTo.startOfMonth());
-            render();
+            self.render();
 
             // stop event from propagating
             e.preventDefault();
-        }
+        };
 
         /*
          * handles the construction of a jquery node for a day setting all the
          * correct display classes for selected, today and included
          */
-        function buildDay(date) {
+        self.buildDay = function (date) {
             var day_node = $(dayTemplate);
 
             // identify this day by date of month
@@ -309,57 +309,57 @@
 
             if ((minDate === null || date > minDate) &&
                 (maxDate === null || date < maxDate)) {
-                day_node.on('click', dayClicked);
+                day_node.on('click', self.dayClicked);
             } else {
                 day_node.on('click', function (e) { e.preventDefault(); });
                 day_node.addClass('disabled');
             }
 
             return day_node;
-        }
+        };
 
         /*
          * handles the construction of the jquery node for a week for given date
          */
-        function buildWeek(date) {
+        self.buildWeek = function (date) {
             var week_node = $(weekTemplate);
             for (var i=0; i < DAYS_IN_WEEK; i++) {
                 // append rendered day template to week
-                week_node.append(buildDay(new Date(date)));
+                week_node.append(self.buildDay(new Date(date)));
 
                 // increment date by one day
                 date.setDate(date.getDate() + 1);
             }
             return week_node;
-        }
+        };
 
         /*
          * handles the construction of the jquery node for the month given
          */
-        function buildMonth(date) {
+        self.buildMonth = function (date) {
             var month_node = $(monthTemplate);
 
             for (var i=0; i < WEEKS_IN_MONTH; i++) {
                 // append rendered week template to month
-                month_node.append(buildWeek(new Date(date)));
+                month_node.append(self.buildWeek(new Date(date)));
 
                 // increment date by one week (in days)
                 date.setDate(date.getDate() + DAYS_IN_WEEK);
             }
             return month_node;
-        }
+        };
 
         /*
          * handles the construction of the jquery node for the calendar area
          */
-        function buildCalendar() {
-            return $(calendarTemplate).append(buildMonth(new Date(displayedDate.startOfCalendar())));
-        }
+        self.buildCalendar = function () {
+            return $(calendarTemplate).append(self.buildMonth(new Date(displayedDate.startOfCalendar())));
+        };
 
         /*
          * handles the construction of the jquery node for the range area
          */
-        function buildRange() {
+        self.buildRange = function () {
             // initialize elements
             var range_node = $(rangeTemplate);
             var from_node = $(fromTemplate);
@@ -374,9 +374,9 @@
             to_node.html(dateTo.strftime(valueFormat));
 
             // register events
-            from_node.on('click', fromClicked);
-            today_node.on('click', todayClicked);
-            to_node.on('click', toClicked);
+            from_node.on('click', self.fromClicked);
+            today_node.on('click', self.todayClicked);
+            to_node.on('click', self.toClicked);
 
             // construct range area
             range_node.append(from_node);
@@ -384,12 +384,12 @@
             range_node.append(to_node);
 
             return range_node;
-        }
+        };
 
         /*
          * handles the construction of the jquery node for the navigation controls
          */
-        function buildNav() {
+        self.buildNav = function () {
             // initialize elements
             var nav_node = $(navTemplate);
             var prev_year_node = $(prevYearTemplate);
@@ -400,7 +400,7 @@
 
             // register events for previous year
             if (minDate === null || minDate.getFullYear() < displayedDate.getFullYear()) {
-                prev_year_node.on('click', prevYear);
+                prev_year_node.on('click', self.prevYear);
             } else {
                 prev_year_node.on('click', function (e) { e.preventDefault(); });
                 prev_year_node.addClass('disabled');
@@ -408,7 +408,7 @@
 
             // register events for previous month
             if (minDate === null || minDate < displayedDate) {
-                prev_month_node.on('click', prevMonth);
+                prev_month_node.on('click', self.prevMonth);
             } else {
                 prev_month_node.on('click', function (e) { e.preventDefault(); });
                 prev_month_node.addClass('disabled');
@@ -416,7 +416,7 @@
 
             // register events for next month
             if (maxDate === null || maxDate > displayedDate.endOfMonth()) {
-                next_month_node.on('click', nextMonth);
+                next_month_node.on('click', self.nextMonth);
             } else {
                 next_month_node.on('click', function (e) { e.preventDefault(); });
                 next_month_node.addClass('disabled');
@@ -424,7 +424,7 @@
 
             // register events for next year
             if (maxDate === null || maxDate.getFullYear() > displayedDate.getFullYear()) {
-                next_year_node.on('click', nextYear);
+                next_year_node.on('click', self.nextYear);
             } else {
                 next_year_node.on('click', function (e) { e.preventDefault(); });
                 next_year_node.addClass('disabled');
@@ -438,20 +438,20 @@
             nav_node.append(next_year_node);
 
             return nav_node;
-        }
+        };
 
         /*
          * handles the construction of the jquery node for the mode selection controls
          */
-        function buildModeSelection() {
+        self.buildModeSelection = function () {
             // initialize elements
             var mode_node = $(modeTemplate);
             var fixed_node = $(fixedTemplate);
             var custom_node = $(customTemplate);
 
             // register events
-            fixed_node.on('click', fixedClicked);
-            custom_node.on('click', customClicked);
+            fixed_node.on('click', self.fixedClicked);
+            custom_node.on('click', self.customClicked);
 
             // construct mode selection area
             mode_node.append(fixed_node);
@@ -462,12 +462,12 @@
             else { fixed_node.addClass(activeClass); }
 
             return mode_node;
-        }
+        };
 
         /*
          * properly handles setting dateFrom and dateTo depending on mode and selection
          */
-        function updateRange() {
+        self.updateRange = function () {
             if (periodType === PERIOD_CUSTOM) {
                 // we require two clicks in order to determine from and to
                 // and until then we get the second click we need a stable
@@ -482,7 +482,7 @@
                     }
 
                     // we only notify listener when the complete range has been determined
-                    triggerOnUpdate();
+                    self.triggerOnUpdate();
                 }
                 else {
                     dateFrom = currentDate.startOfDay();
@@ -519,25 +519,25 @@
                 dateFrom = from;
                 dateTo = to;
 
-                triggerOnUpdate();
+                self.triggerOnUpdate();
             }
-        }
+        };
 
         /*
          * triggers the onUpdate callback
          */
-        function triggerOnUpdate() {
+        self.triggerOnUpdate = function () {
             if (onUpdate) { onUpdate([dateFrom, dateTo]); }
-        }
+        };
 
         /*
          * triggers the onInit callback
          */
-        function triggerOnInit() {
+        self.triggerOnInit = function () {
             if (onInit) { onInit([dateFrom, dateTo]); }
-        }
+        };
 
-        function realizePeriodType() {
+        self.realizePeriodType = function () {
             var from = dateFrom.startOfDay();
             var to = dateTo.startOfDay();
 
@@ -561,35 +561,35 @@
                 selectingLast = false;
                 periodType = PERIOD_CUSTOM;
             }
-        }
+        };
 
         /*
          * constructs and displays the rangepicker
          */
-        function render() {
+        self.render = function () {
             // make sure we have a clean slate
             var root = $(rootTemplate);
 
             // add navigation display
-            root.append(buildNav());
+            root.append(self.buildNav());
 
             // add range display
-            root.append(buildRange());
+            root.append(self.buildRange());
 
             // add calendar display
-            root.append(buildCalendar());
+            root.append(self.buildCalendar());
 
             // add mode selection display
-            root.append(buildModeSelection());
+            root.append(self.buildModeSelection());
 
             // add rangepicker to root element
             self.html(root);
-        }
+        };
 
         /*
          * validates options and initializes the rangepicker
          */
-        function init(opts) {
+        self.init = function(opts) {
 
             if (opts === undefined) { opts = {}; }
 
@@ -653,7 +653,7 @@
             if (dateFrom && dateTo) {
                 periodType = PERIOD_DAY;
 
-                realizePeriodType();
+                self.realizePeriodType();
 
                 currentDate = dateFrom.startOfDay();
             }
@@ -661,16 +661,16 @@
             displayedDate = dateFrom.startOfMonth();
 
             // trigger initial update of range
-            triggerOnInit();
+            self.triggerOnInit();
 
             // initial build
-            render();
+            self.render();
 
             // return reference to self for jquery chaining
             return self;
-        }
+        };
 
         // intialize and return
-        return init(opts);
+        return self.init(opts);
     };
 }(jQuery));
