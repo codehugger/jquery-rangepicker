@@ -2,8 +2,8 @@
  * jquery-rangepicker
  *
  * @copyright 2012 Bjarki Gudlaugsson (codehugger at codehuggers dot com)
- * @version 0.1.2, June 2012 (http://codehugger.github.com/jquery-rangepicker)
- * @license BSD http://opensource.org/licenses/BSD-3-Clause
+ * @version 0.1.4, January 2013 (http://codehugger.github.com/jquery-rangepicker)
+ * @license see supplied LICENSE
  */
 
 (function ($) {

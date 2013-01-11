@@ -1,8 +1,8 @@
 /**
- * jquery-rangepickers
+ * jquery-rangepicker-ko
  *
  * @copyright 2012 Bjarki Gudlaugsson (codehugger at codehuggers dot com)
- * @version 0.1.2, June 2012 (http://codehugger.github.com/jquery-rangepicker)
+ * @version 0.1.4, January 2013 (http://codehugger.github.com/jquery-rangepicker)
  * @license see supplied LICENSE
  */
 
