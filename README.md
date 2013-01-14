@@ -22,7 +22,7 @@ _Principle-Of-Least-Astonishment_.
 
 ## Live Example
 
-There is a live demo running the latest build at [jsFiddle](http://jsfiddle.net/MPeqP/2/)
+There is a live demo running the latest build at [jsFiddle](http://jsfiddle.net/MPeqP/5/)
 
 ## Requirements
 
