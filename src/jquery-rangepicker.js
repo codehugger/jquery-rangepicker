@@ -644,7 +644,7 @@
             todayClass        = opts.todayClass       || 'today';
 
             // allow configuration to use strings instead of cryptic numbers used internally
-            $.each(function (i, value) {
+            $.each(PERIOD_CHOICES, function (i, value) {
                 if (value === periodType) {
                     periodType = i;
                 }
