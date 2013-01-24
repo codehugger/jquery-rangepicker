@@ -541,11 +541,7 @@
             var from = dateFrom.startOfDay();
             var to = dateTo.startOfDay();
 
-            if (from.valueOf() == to.valueOf() &&
-                periodType != PERIOD_CUSTOM) {
-                periodType = PERIOD_DAY;
-            }
-            else if (from.getDay() === 0 &&
+            if (from.getDay() === 0 &&
                 to.getDay() === 6 &&
                 from.getWeek() === to.getWeek() &&
                 periodType !== PERIOD_CUSTOM) {
@@ -557,10 +553,15 @@
                 periodType !== PERIOD_CUSTOM) {
                 periodType = PERIOD_MONTH;
             }
+            else if (from.valueOf() !== to.valueOf() && periodType !== PERIOD_CUSTOM) {
+                periodType = PERIOD_DAY;
+            }
             else {
                 selectingLast = false;
                 periodType = PERIOD_CUSTOM;
             }
+
+            console.log('after', periodType);
         };
 
         /*
@@ -597,7 +598,7 @@
             currentDate       = opts.currentDate      || new Date().startOfDay();
             dateFrom          = opts.dateFrom         || currentDate.startOfDay();
             dateTo            = opts.dateTo           || currentDate.endOfDay();
-            periodType        = opts.periodType       || 'day';
+            periodType        = opts.periodType       || 'custom';
             displayedDate     = opts.displayedDate    || currentDate.startOfMonth();
             onInit            = opts.onInit           || undefined;
             onUpdate          = opts.onUpdate         || undefined;
@@ -651,14 +652,12 @@
             });
 
             if (dateFrom && dateTo) {
-                periodType = PERIOD_DAY;
-
+                periodType = PERIOD_CUSTOM;
                 self.realizePeriodType();
-
-                currentDate = dateFrom.startOfDay();
+                currentDate = dateTo.startOfDay();
             }
 
-            displayedDate = dateTo.startOfMonth();
+            displayedDate = currentDate.startOfMonth();
 
             // trigger initial update of range
             self.triggerOnInit();
