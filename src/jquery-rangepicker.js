@@ -658,7 +658,7 @@
                 currentDate = dateFrom.startOfDay();
             }
 
-            displayedDate = dateFrom.startOfMonth();
+            displayedDate = dateTo.startOfMonth();
 
             // trigger initial update of range
             self.triggerOnInit();
