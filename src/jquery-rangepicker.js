@@ -476,7 +476,7 @@
                     dateTo = currentDate.endOfDay();
 
                     if (dateFrom > dateTo) {
-                        var tmp = dateFrom.startOfDay();
+                        var tmp = dateFrom.endOfDay();
                         dateFrom = dateTo.startOfDay();
                         dateTo = tmp;
                     }
@@ -560,8 +560,6 @@
                 selectingLast = false;
                 periodType = PERIOD_CUSTOM;
             }
-
-            console.log('after', periodType);
         };
 
         /*
